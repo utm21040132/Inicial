@@ -1,35 +1,27 @@
-const mongoose = require('mongoose');
-const urlbd = "mongodb://localhost:27017";
+import mongoose from "mongoose";
+import express from "express";
+import dotenv from "dotenv";
+import cors from "cors";
+import { test } from "./Backend/controllers/alumnosController.js";
+
+dotenv.config();
+
+
+
 //Conexion ala base de datos
-mongoose.connect(urlbd)
+mongoose.connect(process.env.urlbd)
 .then(()=>{
-    console.log("Funciona la connexion a la base de datos")
+    console.log("Funciona la conexion a la base de datos")
 })
 .catch((error)=>{
     console.log("No funciona la conexion", error)
 })
 
-//Generacion de esquemas
+const app = express();
+app.use(cors());
 
-const esquemaAlumnos = new mongoose.Schema({
-    name:{
-        type:String
-    },
-    lastName:{
-        type:String
-    },
-    age:{
-        type:Number
-    }
+app.listen(4000,()=>{
+    console.log("Se escucha correctamente el servidor, no se escucha borroso");
 });
 
-//Los esquemas son para la reutilizacion del codigo
-//Todos los modelos son una tablas
-const modeloAlumnos = new mongoose.model("Tabla de alumnos", esquemaAlumnos);
-
-modeloAlumnos.create({
-    name: "Jorge",
-    lastName: "Montantes",
-    age: 21
-})
-
+test();
